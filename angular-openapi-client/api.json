@@ -1,0 +1,265 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+		"title": "OpenAPI definition",
+		"version": "v0"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:8080",
+			"description": "Generated server url"
+		}
+	],
+	"paths": {
+		"/users": {
+			"get": {
+				"tags": [
+					"user-controller"
+				],
+				"summary": "get all users",
+				"description": "get the list of all users",
+				"operationId": "getUsers",
+				"responses": {
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/UserDto"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": [
+					"user-controller"
+				],
+				"summary": "create a new user",
+				"operationId": "createUser",
+				"parameters": [
+					{
+						"name": "userDto",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UserDto"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"DemoBearerAuthentication": []
+					}
+				]
+			}
+		},
+		"/users/{publicId}": {
+			"get": {
+				"tags": [
+					"user-controller"
+				],
+				"summary": "get a specific user",
+				"operationId": "getUser",
+				"parameters": [
+					{
+						"name": "publicId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserDto"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": [
+					"user-controller"
+				],
+				"summary": "delete an existing user",
+				"operationId": "deleteUser",
+				"parameters": [
+					{
+						"name": "publicId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiError"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"security": [
+					{
+						"DemoBearerAuthentication": []
+					}
+				]
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"ApiError": {
+				"required": [
+					"code"
+				],
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "string"
+					},
+					"errorMessage": {
+						"type": "string"
+					}
+				}
+			},
+			"UserDto": {
+				"required": [
+					"firstName",
+					"lastName",
+					"username"
+				],
+				"type": "object",
+				"properties": {
+					"publicId": {
+						"type": "string"
+					},
+					"username": {
+						"maxLength": 20,
+						"minLength": 0,
+						"type": "string"
+					},
+					"firstName": {
+						"maxLength": 30,
+						"minLength": 0,
+						"type": "string"
+					},
+					"lastName": {
+						"maxLength": 30,
+						"minLength": 0,
+						"type": "string"
+					}
+				}
+			}
+		},
+		"securitySchemes": {
+			"DemoBearerAuthentication": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	}
+}
